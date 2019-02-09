@@ -1,6 +1,7 @@
 var db = require("../models");
+var financialsData = require('../public/js/financials');
 
-var moment = require("moment");
+
 
 module.exports = function(app) {
   // Load index page
@@ -27,6 +28,13 @@ module.exports = function(app) {
 
   // Load example page and pass in an example by id
   app.get("/users/:id", function(req, res) {
+<<<<<<< HEAD
+    financialsData(req.params.id, function(data) {
+      res.render("financials", data);
+    }); 
+   
+  });
+=======
     // var x = {};
     db.Users.findOne({ where: { id: req.params.id } }).then(function(userData) {
 
@@ -101,9 +109,13 @@ module.exports = function(app) {
       });
     });
   
+>>>>>>> 1b5dcdd5f3e42655f45d84bf9e9ecd2bcdef8a1a
+
+    
 
   // Render 404 page for any unmatched routes
   app.get("*", function(req, res) {
     res.render("404");
   });
-};
+
+}
