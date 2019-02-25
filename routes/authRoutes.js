@@ -1,7 +1,7 @@
 // PASSPORT: These are the main passport routes for handling signup, signin,logout, and to show the users dashboard
-module.exports = (app, passport) => {
+module.exports = function(app, passport) {
   // Load sign up page for authentication
-  app.get("/signup", (req, res) => {
+  app.get("/signup", function(req, res) {
     res.render("signup");
   });
 
@@ -15,7 +15,7 @@ module.exports = (app, passport) => {
   );
 
   // Load sign in page for authentication
-  app.get("/signin", (req, res) => {
+  app.get("/signin", function(req, res) {
     res.render("signin");
   });
 
@@ -29,8 +29,8 @@ module.exports = (app, passport) => {
   );
 
   // Load logout route to destroy passport session
-  app.get("/logout", (req, res) => {
-    req.session.destroy(err => {
+  app.get("/logout", function(req, res) {
+    req.session.destroy(function(err) {
       if (err) {
         res.redirect("/error"); // will render a 404 since that route doesn't exist
       }
@@ -39,7 +39,7 @@ module.exports = (app, passport) => {
   });
 
   // Load dashboard page after authentication
-  app.get("/dashboard", isLoggedIn, (req, res) => {
+  app.get("/dashboard", isLoggedIn, function(req, res) {
     res.render("dashboard");
   });
 

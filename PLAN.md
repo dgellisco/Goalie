@@ -15,12 +15,12 @@ Three pages, functioning with handlebars.  We need to get it presentable, and us
 
 To do:
 ----------
-JS [Dave] - Clean up code.  Get logic out of html.Routes and into proper JS file.
+JS [DONE] - Clean up code.  Get logic out of html.Routes and into proper JS file.
 JS [Dave] - Make calculations push progress etc. to database.
 JS - Code "update savings" button on financials page, it should update database and refresh page with new calculations.
 JS - Calcuations.  Add in moment.js calculations to show progress since last entry, updated projected goal, etc.
 JS - Form validation.  Ensure all fields are entered.  Ensure they are of the right type.
-CSS - Template for every page.  Upload to single file "main.handlebars" in views/layouts to work on all handlebars pages.
+CSS - Basic overall template for the site.  Upload to single file "main.handlebars" in views/layouts to work on all handlebars pages.
 CSS - Specific styling for each page (login/newuser/userprofile pages)
 
 

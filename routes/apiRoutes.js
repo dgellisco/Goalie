@@ -18,15 +18,18 @@ module.exports = function(app) {
   // Create a new example
   app.post("/api/users", function(req, res) {
     db.Users.create(req.body).then(function(dbUsers) {
-      console.log(req.body);
       res.json(dbUsers);
     });
   });
 
-  // Create a new example
+  // Update financials ledger
   app.post("/api/financials", function(req, res) {
+    console.log("req.body");
+    console.log(JSON.stringify(req.body));
+    console.log(req.params.id);
     db.Financials.create(req.body).then(function(dbFinancials) {
-      console.log(req.body);
+      console.log(dbFinancials);
+      // res.set("Content-Type", "text/html");
       res.json(dbFinancials);
     });
   });

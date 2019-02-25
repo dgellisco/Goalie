@@ -4,8 +4,7 @@ module.exports = function(sequelize, DataTypes) {
     userid: DataTypes.INTEGER,
     balance: DataTypes.FLOAT,
     date: DataTypes.DATE,
-    income: DataTypes.FLOAT,
-    rateofsaving: DataTypes.FLOAT
+    income: DataTypes.FLOAT
   });
   return Financials;
 };

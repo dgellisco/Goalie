@@ -1,17 +1,17 @@
-const bCrypt = require("bcrypt-nodejs");
-const db = require("../models");
+var bCrypt = require("bcrypt-nodejs");
+var db = require("../models");
 
 // PASSPORT: No need to edit this file unless you want to change from email login to username login
-module.exports = passport => {
-  const LocalStrategy = require("passport-local").Strategy;
+module.exports = function(passport) {
+  var LocalStrategy = require("passport-local").Strategy;
 
-  passport.serializeUser((user, done) => {
+  passport.serializeUser(function(user, done) {
     console.log("user id =", user.id);
     done(null, user.id);
   });
 
-  passport.deserializeUser((id, done) => {
-    db.Users.findByPk(id).then(user => {
+  passport.deserializeUser(function(id, done) {
+    db.User.findByPk(id).then(function(user) {
       // findByPk is the new way to write findById in sequelize
       if (user) {
         done(null, user.get());
@@ -30,30 +30,30 @@ module.exports = passport => {
         passReqToCallback: true // allows us to pass back the entire request to the callback
       },
 
-      (req, email, password, done) => {
-        const generateHash = password => {
+      function(req, email, password, done) {
+        var generateHash = function(password) {
           return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
         };
 
-        db.Users.findOne({
+        db.User.findOne({
           where: {
             email: email
           }
-        }).then(user => {
+        }).then(function(user) {
           if (user) {
             return done(null, false, {
               message: "That email is already taken"
             });
           } else {
-            const userPassword = generateHash(password);
-            const data = {
+            var userPassword = generateHash(password);
+            var data = {
               email: email,
               password: userPassword,
               firstname: req.body.firstname,
               lastname: req.body.lastname
             };
 
-            db.Users.create(data).then(newUser => {
+            db.User.create(data).then(function(newUser) {
               if (!newUser) {
                 return done(null, false);
               }
@@ -77,18 +77,18 @@ module.exports = passport => {
         passwordField: "password",
         passReqToCallback: true // allows us to pass back the entire request to the callback
       },
-      (req, email, password, done) => {
+      function(req, email, password, done) {
         // const User = user;
-        const isValidPassword = (userpass, password) => {
+        var isValidPassword = function(userpass, password) {
           return bCrypt.compareSync(password, userpass);
         };
 
-        db.Users.findOne({
+        db.User.findOne({
           where: {
             email: email
           }
         })
-          .then(user => {
+          .then(function(user) {
             if (!user) {
               return done(null, false, {
                 message: "Email does not exist"
@@ -99,10 +99,10 @@ module.exports = passport => {
                 message: "Incorrect Password."
               });
             }
-            const userinfo = user.get();
+            var userinfo = user.get();
             return done(null, userinfo);
           })
-          .catch(err => {
+          .catch(function(err) {
             console.log("Error:", err);
             return done(null, false, {
               message: "Something went wrong with your Signin"
