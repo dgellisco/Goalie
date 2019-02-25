@@ -6,7 +6,7 @@ var $goaldescr = $("#input-goaldescr");
 var $goalamount = $("#input-goalamount");
 
 var $submitBtn = $("#submit");
-// var $usersList = $("#users-list");
+var $usersList = $("#users-list");
 
 // The API object contains methods for each kind of request we'll make
 var API = {
@@ -183,4 +183,3 @@ var handleFormSubmitUpdates = function(event) {
 };
 
 $submitBtnUpdate.on("click", handleFormSubmitUpdates);
-

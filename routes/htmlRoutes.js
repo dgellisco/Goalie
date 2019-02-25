@@ -9,12 +9,10 @@ module.exports = function(app) {
       if (req.user) {
         logout = true;
       }
-        
-        res.render("index", {
-          // msg: "Welcome!",
-          usersData: usersData,  
-        });
-      
+      res.render("index", {
+        // msg: "Welcome!",
+        usersData: usersData
+      });
     });
   });
 
