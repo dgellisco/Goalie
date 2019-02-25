@@ -13,6 +13,10 @@ var db = require("./models");
 var app = express();
 var PORT = process.env.PORT || 3000;
 
+// PASSPORT: imports passport and express-session used with passport
+var passport = require("passport");
+var session = require("express-session");
+
 // Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -33,21 +37,37 @@ app.engine(
 );
 app.set("view engine", "handlebars");
 
+// PASSPORT: Middleware for Passport
+app.use(
+  session({
+    secret: "wild and crazy guys",
+    resave: true,
+    saveUninitialized: true
+  })
+);
+
+// PASSPORT: Initialize passport and the passport session
+app.use(passport.initialize());
+app.use(passport.session());
+
 //Models
 var models = require("./models");
 
 // Routes
-require("./routes/authRoutes")(app); // PASSPORT: auth routes used with passport
+require("./routes/authRoutes")(app, passport); // PASSPORT: auth routes used with passport
 require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
 
-// var syncOptions = { force: false };
+// PASSPORT: load passport strategies
+require("./config/passport.js")(passport, models.users);
 
-// // If running a test, set syncOptions.force to true
-// // clearing the `testdb`
-// if (process.env.NODE_ENV === "test") {
-//   syncOptions.force = true;
-// }
+var syncOptions = { force: false };
+
+// If running a test, set syncOptions.force to true
+// clearing the `testdb`
+if (process.env.NODE_ENV === "test") {
+  syncOptions.force = true;
+}
 
 // Starting the server, syncing our models ------------------------------------/
 db.sequelize.sync(syncOptions).then(function() {

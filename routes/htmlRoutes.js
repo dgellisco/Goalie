@@ -5,14 +5,16 @@ module.exports = function(app) {
   // Load index page
   app.get("/", function(req, res) {
     db.Users.findAll({}).then(function(usersData) {
-      let logout = false;
-      if (req.user) {
-        logout = true;
-      }
-      res.render("index", {
-        // msg: "Welcome!",
-        usersData: usersData
-      });
+      // let logout = false;
+      // if (req.user) {
+      //   logout = true;
+      // }
+        
+        res.render("index", {
+          // msg: "Welcome!",
+          usersData: usersData,  
+        });
+      
     });
   });
 

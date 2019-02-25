@@ -85,7 +85,71 @@ module.exports = function(userid, callback) {
         .add(goalDaysRemaining, "days")
         .format("dddd, MMMM Do YYYY");
 
-      userFinancials.goaltimeremaining = goalDaysRemaining;
+
+        Date.getFormattedDateDiff = function(date1, date2) {
+          var b = moment(date1),
+              a = moment(date2),
+              intervals = ['years','months','weeks','days'],
+              out = [];
+         
+          for(var i=0; i < intervals.length; i++){
+              var diff = a.diff(b, intervals[i]);
+              b.add(diff, intervals[i]);
+              out.push(diff + ' ' + intervals[i]);
+          }
+          out = out.join(', ');
+
+          console.log("out", out);
+          if (out.includes("1 years, ")) {
+            out = out.replace("1 years, ", "1 year, ");
+          }
+          if (out.includes("0 years, ")) {
+            out = out.replace("0 years, ", "");
+          }
+
+          if (out.includes("1 months, ")) {
+            out = out.replace("1 months, ", "1 month, ");
+          }
+          if (out.includes("0 months, ")) {
+            out = out.replace("0 months, ", "");
+          }
+
+          if (out.includes("1 weeks, ")) {
+            out = out.replace("1 weeks, ", "1 week, ");
+          }
+          if (out.includes("0 weeks, ")) {
+            out = out.replace("0 weeks, ", "");
+          }
+
+          if (out.includes("1 days")) {
+            out = out.replace("1 days", "1 day");
+          }
+          if (out.includes(", 0 days")) {
+            out = out.replace(", 0 days", "");
+          }
+
+
+          return out;
+          
+        };
+         
+        var today   = new Date(),
+            goaldate = moment().add(goalDaysRemaining, "days").toDate();
+            y2k     = new Date(2000, 0, 1);
+          
+            console.log(today);
+            console.log(goaldate);
+            console.log(y2k);
+          //(AS OF NOV 29, 2016)
+          //Time since New Year: 0 years, 10 months, 4 weeks, 0 days
+          console.log( 'Time since New Year: ' + Date.getFormattedDateDiff(y2k, today) );
+          
+          //Time since Y2K: 16 years, 10 months, 4 weeks, 0 days
+          console.log( 'Time until goal date: ' + Date.getFormattedDateDiff(today, goaldate) );
+
+
+
+      userFinancials.goaltimeremaining = Date.getFormattedDateDiff(today, goaldate);
 
       var userDetails = {
         userFinancials: userFinancials,
