@@ -1,4 +1,11 @@
+.py-5 {
+  padding-bottom: 1rem!important;
+}
 
+footer {
+  margin-top: 1rem!important;
+  margin-bottom: 1rem!important;
+}
 
 .list-group-item {
   line-height: 2.5;

@@ -85,7 +85,9 @@ module.exports = function(userid, callback) {
         .add(goalDaysRemaining, "days")
         .format("dddd, MMMM Do YYYY");
 
-
+        // format date to years months weeks days
+          // remove any of these timeperiods with a value of 0 
+          // set any that are 1 to not be singular and not plural
         Date.getFormattedDateDiff = function(date1, date2) {
           var b = moment(date1),
               a = moment(date2),
@@ -100,32 +102,37 @@ module.exports = function(userid, callback) {
           out = out.join(', ');
 
           console.log("out", out);
-          if (out.includes("1 years, ")) {
-            out = out.replace("1 years, ", "1 year, ");
+          if (out.indexOf("1 years, ") == 0) {
+            out = out.replace("1 years, ", " 1 year, ");
           }
+
           if (out.includes("0 years, ")) {
             out = out.replace("0 years, ", "");
           }
 
-          if (out.includes("1 months, ")) {
-            out = out.replace("1 months, ", "1 month, ");
+          if (out.includes(" 1 months, ")) {
+            out = out.replace(" 1 months, ", " 1 month, ");
           }
-          if (out.includes("0 months, ")) {
-            out = out.replace("0 months, ", "");
-          }
-
-          if (out.includes("1 weeks, ")) {
-            out = out.replace("1 weeks, ", "1 week, ");
-          }
-          if (out.includes("0 weeks, ")) {
-            out = out.replace("0 weeks, ", "");
+          if (out.includes(" 0 months, ")) {
+            out = out.replace(" 0 months, ", " ");
           }
 
-          if (out.includes("1 days")) {
-            out = out.replace("1 days", "1 day");
+          if (out.includes(" 1 weeks, ")) {
+            out = out.replace(" 1 weeks, ", " 1 week, ");
+          }
+          if (out.includes(" 0 weeks, ")) {
+            out = out.replace(" 0 weeks, ", " ");
+          }
+
+          if (out.includes(" 1 days")) {
+            out = out.replace(" 1 days", "1 day");
           }
           if (out.includes(", 0 days")) {
             out = out.replace(", 0 days", "");
+          }
+
+          if (out.includes("test, ")) {
+            out = out.replace("test, ", "");
           }
 
 
