@@ -28,8 +28,7 @@
           {{#each usersData}}
           <li class="list-group-item d-flex justify-content-between lh-condensed">
             <div class="scroll-list">
-              <h6 class="my-0"><a href="users/{{this.id}}">{{this.username}}</a></h6>
-              <p class="text-muted">Goal: {{this.goaldescr}}</p>
+              <span><strong>{{this.username}}</strong> is saving for a <strong>{{this.goaldescr}}</strong></span>
             </div>
           </li>
           {{/each}}
