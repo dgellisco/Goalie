@@ -41,6 +41,11 @@ module.exports = function(userid, callback) {
             userData.goalamount - userFinancials.balance;
         }
 
+        // If balance remaining is negative, set to 0
+        if (userFinancials.balanceremaining < 0) {
+          userFinancials.balanceremaining = 0;
+        }
+
         // INCOME
         // Get income
         userFinancials.income = finData[0].income;
@@ -61,6 +66,9 @@ module.exports = function(userid, callback) {
         (userFinancials.balance / userData.goalamount) *
         100
       ).toFixed(1);
+      if (userFinancials.progress > 100) {
+        userFinancials.progress = 100;
+      }
 
       // calculate savings per week
       var timeBefore = moment();
@@ -80,83 +88,90 @@ module.exports = function(userid, callback) {
       ).toFixed(0);
 
       console.log("days remaining " + goalDaysRemaining);
-      userData.goaldate = 0;
-      userData.goaldate = moment()
-        .add(goalDaysRemaining, "days")
-        .format("dddd, MMMM Do YYYY");
 
-        // format date to years months weeks days
-          // remove any of these timeperiods with a value of 0 
-          // set any that are 1 to not be singular and not plural
-        Date.getFormattedDateDiff = function(date1, date2) {
-          var b = moment(date1),
-              a = moment(date2),
-              intervals = ['years','months','weeks','days'],
-              out = [];
-         
-          for(var i=0; i < intervals.length; i++){
-              var diff = a.diff(b, intervals[i]);
-              b.add(diff, intervals[i]);
-              out.push(diff + ' ' + intervals[i]);
-          }
-          out = out.join(', ');
+      if (goalDaysRemaining > 0) {
+        userData.goaldate = 0;
+        userData.goaldate = moment()
+          .add(goalDaysRemaining, "days")
+          .format("dddd, MMMM Do YYYY");
 
-          console.log("out", out);
-          if (out.indexOf("1 years, ") == 0) {
-            out = out.replace("1 years, ", " 1 year, ");
-          }
-
-          if (out.includes("0 years, ")) {
-            out = out.replace("0 years, ", "");
-          }
-
-          if (out.includes(" 1 months, ")) {
-            out = out.replace(" 1 months, ", " 1 month, ");
-          }
-          if (out.includes(" 0 months, ")) {
-            out = out.replace(" 0 months, ", " ");
-          }
-
-          if (out.includes(" 1 weeks, ")) {
-            out = out.replace(" 1 weeks, ", " 1 week, ");
-          }
-          if (out.includes(" 0 weeks, ")) {
-            out = out.replace(" 0 weeks, ", " ");
-          }
-
-          if (out.includes(" 1 days")) {
-            out = out.replace(" 1 days", "1 day");
-          }
-          if (out.includes(", 0 days")) {
-            out = out.replace(", 0 days", "");
-          }
-
-          if (out.includes("test, ")) {
-            out = out.replace("test, ", "");
-          }
-
-
-          return out;
+          // format date to years months weeks days
+            // remove any of these timeperiods with a value of 0 
+            // set any that are 1 to not be singular and not plural
+          Date.getFormattedDateDiff = function(date1, date2) {
+            var b = moment(date1),
+                a = moment(date2),
+                intervals = ['years','months','weeks','days'],
+                out = [];
           
-        };
-         
-        var today   = new Date(),
-            goaldate = moment().add(goalDaysRemaining, "days").toDate();
-            y2k     = new Date(2000, 0, 1);
+            for(var i=0; i < intervals.length; i++){
+                var diff = a.diff(b, intervals[i]);
+                b.add(diff, intervals[i]);
+                out.push(diff + ' ' + intervals[i]);
+            }
+            out = out.join(', ');
+
+            console.log("out", out);
+            if (out.indexOf("1 years, ") == 0) {
+              out = out.replace("1 years, ", " 1 year, ");
+            }
+
+            if (out.includes("0 years, ")) {
+              out = out.replace("0 years, ", "");
+            }
+
+            if (out.includes(" 1 months, ")) {
+              out = out.replace(" 1 months, ", " 1 month, ");
+            }
+            if (out.includes(" 0 months, ")) {
+              out = out.replace(" 0 months, ", " ");
+            }
+
+            if (out.includes(" 1 weeks, ")) {
+              out = out.replace(" 1 weeks, ", " 1 week, ");
+            }
+            if (out.includes(" 0 weeks, ")) {
+              out = out.replace(" 0 weeks, ", " ");
+            }
+
+            if (out.includes(" 1 days")) {
+              out = out.replace(" 1 days", "1 day");
+            }
+            if (out.includes(", 0 days")) {
+              out = out.replace(", 0 days", "");
+            }
+
+            if (out.includes("test, ")) {
+              out = out.replace("test, ", "");
+            }
+
+
+            return out;
+            
+          };
           
-            console.log(today);
-            console.log(goaldate);
-            console.log(y2k);
-          //(AS OF NOV 29, 2016)
-          //Time since New Year: 0 years, 10 months, 4 weeks, 0 days
-          console.log( 'Time since New Year: ' + Date.getFormattedDateDiff(y2k, today) );
-          
-          //Time since Y2K: 16 years, 10 months, 4 weeks, 0 days
-          console.log( 'Time until goal date: ' + Date.getFormattedDateDiff(today, goaldate) );
+          var today   = new Date(),
+              goaldate = moment().add(goalDaysRemaining, "days").toDate();
+              y2k     = new Date(2000, 0, 1);
+            
+              console.log(today);
+              console.log(goaldate);
+              console.log(y2k);
+            //(AS OF NOV 29, 2016)
+            //Time since New Year: 0 years, 10 months, 4 weeks, 0 days
+            console.log( 'Time since New Year: ' + Date.getFormattedDateDiff(y2k, today) );
+            
+            //Time since Y2K: 16 years, 10 months, 4 weeks, 0 days
+            console.log( 'Time until goal date: ' + Date.getFormattedDateDiff(today, goaldate) );
 
 
 
-      userFinancials.goaltimeremaining = Date.getFormattedDateDiff(today, goaldate);
+        userFinancials.goaltimeremaining = Date.getFormattedDateDiff(today, goaldate);
+      }
+      else {
+        userFinancials.goaltimeremaining = "Goal achieved!";
+        userData.goaldate = "Goal achieved!";
+      }
 
       var userDetails = {
         userFinancials: userFinancials,

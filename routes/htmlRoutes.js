@@ -10,7 +10,7 @@ module.exports = function(app) {
       //   logout = true;
       // }
         
-        res.render("index", {
+        res.render("newuser", {
           // msg: "Welcome!",
           usersData: usersData,  
         });
@@ -21,6 +21,14 @@ module.exports = function(app) {
   app.get("/newuser", function(req, res) {
     db.Users.findAll({}).then(function(usersData) {
       res.render("newuser", {
+        usersData: usersData
+      });
+    });
+  });
+
+  app.get("/index", function(req, res) {
+    db.Users.findAll({}).then(function(usersData) {
+      res.render("index", {
         usersData: usersData
       });
     });

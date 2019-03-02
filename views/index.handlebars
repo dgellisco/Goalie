@@ -28,7 +28,7 @@
           {{#each usersData}}
           <li class="list-group-item d-flex justify-content-between lh-condensed">
             <div class="scroll-list">
-              <span><strong>{{this.username}}</strong> is saving for a <strong>{{this.goaldescr}}</strong></span>
+              <span><strong>{{this.username}}</strong> is saving for <strong>{{this.goaldescr}}</strong></span>
             </div>
           </li>
           {{/each}}
@@ -79,10 +79,11 @@
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="width:80%">
       {{#each usersData}}
         <a class="dropdown-item" href="users/{{this.id}}">
-        <p>
-        <span style="float:left">{{this.username}}</span>
-        <span style="float:right">{{this.goaldescr}}</span>
-        </p>
+          <div>
+            <span style="float:left">{{this.username}}</span>
+            <span style="float:right">{{this.goaldescr}}</span>
+            <div style="clear:both"></div>
+          </div>
         </a>
         {{/each}}
   </div>
